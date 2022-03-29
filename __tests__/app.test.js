@@ -15,7 +15,7 @@ describe('alchemy-app routes', () => {
 
   it('signs up a user via post', async () => {
     const res = await request(app)
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/users/')
       .send({ email: 'brettford@defense.gov', password: 'password' });
 
     expect(res.body).toEqual({
@@ -31,7 +31,7 @@ describe('alchemy-app routes', () => {
     });
 
     const res = await request(app)
-      .post('/api/v1/auth/session')
+      .post('/api/v1/users/session')
       .send({ email: 'brettford@defense.gov', password: 'password' });
 
     expect(res.body).toEqual({
@@ -40,5 +40,24 @@ describe('alchemy-app routes', () => {
     });
   });
 
-  // it('');
+  it('signs in and retireves the currently signed in user', async () => {
+    const agent = request.agent(app);
+
+    await UserService.create({
+      email: 'brettford@defense.gov',
+      password: 'password',
+    });
+
+    await agent
+      .post('/api/v1/users/session')
+      .send({ email: 'brettford@defense.gov', password: 'password' });
+
+    const res = await agent.get('/api/v1/users/me');
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      email: 'brettford@defense.gov',
+      exp: expect.any(Number),
+      iat: expect.any(Number),
+    });
+  });
 });
