@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
 
 describe('alchemy-app routes', () => {
   beforeEach(() => {
@@ -18,5 +19,21 @@ describe('alchemy-app routes', () => {
       .send({ username: 'brettford', password: 'password' });
 
     expect(res.body).toEqual({ id: expect.any(String), username: 'brettford' });
+  });
+
+  it('users can sign in', async () => {
+    const user = await UserService.create({
+      username: 'brettford',
+      password: 'password',
+    });
+
+    const res = await request(app)
+      .post('/api/v1/auth/signin')
+      .send({ username: 'brettford', password: 'password' });
+
+    expect(res.body).toEqual({
+      message: 'Sign In Sucessful',
+      user,
+    });
   });
 });
