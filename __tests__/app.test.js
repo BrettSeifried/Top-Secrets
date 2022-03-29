@@ -28,7 +28,7 @@ describe('alchemy-app routes', () => {
     });
 
     const res = await request(app)
-      .post('/api/v1/auth/signin')
+      .post('/api/v1/auth/session')
       .send({ username: 'brettford', password: 'password' });
 
     expect(res.body).toEqual({
