@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const { agent } = require('supertest');
 
 describe('alchemy-app routes', () => {
   beforeEach(() => {
@@ -58,6 +59,28 @@ describe('alchemy-app routes', () => {
       email: 'brettford@defense.gov',
       exp: expect.any(Number),
       iat: expect.any(Number),
+    });
+  });
+
+  it('only signed in users can see messages', async () => {
+    const agent = request.agent(app);
+
+    await UserService.create({
+      email: 'brettford@defense.gov',
+      password: 'password',
+    });
+
+    let res = await agent.get('/api/v1/users/private');
+    expect(res.status).toEqual(401);
+
+    await agent
+      .post('/api/v1/users/session')
+      .send({ email: 'brettford@defense.gov', password: 'password' });
+
+    res = await agent.get('/api/v1/users/private');
+
+    expect(res.body).toEqual({
+      note: 'Top Secret! You can only see this if you are logged in',
     });
   });
 });
