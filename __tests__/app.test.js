@@ -16,24 +16,29 @@ describe('alchemy-app routes', () => {
   it('signs up a user via post', async () => {
     const res = await request(app)
       .post('/api/v1/auth/signup')
-      .send({ username: 'brettford', password: 'password' });
+      .send({ email: 'brettford@defense.gov', password: 'password' });
 
-    expect(res.body).toEqual({ id: expect.any(String), username: 'brettford' });
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      email: 'brettford@defense.gov',
+    });
   });
 
   it('users can sign in', async () => {
     const user = await UserService.create({
-      username: 'brettford',
+      email: 'brettford@defense.gov',
       password: 'password',
     });
 
     const res = await request(app)
       .post('/api/v1/auth/session')
-      .send({ username: 'brettford', password: 'password' });
+      .send({ email: 'brettford@defense.gov', password: 'password' });
 
     expect(res.body).toEqual({
       message: 'Sign In Sucessful',
       user,
     });
   });
+
+  // it('');
 });
