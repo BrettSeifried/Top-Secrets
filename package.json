@@ -1,0 +1,31 @@
+{
+  "name": "alchemy-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest --verbose --runInBand --testLocationInResults",
+    "test:watch": "npm run test -- --watch",
+    "start": "node index.js",
+    "start:watch": "nodemon index.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/plugin-syntax-class-properties": "^7.12.13",
+    "@types/jest": "^27.4.1",
+    "eslint": "^8.12.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.1"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
