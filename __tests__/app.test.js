@@ -124,6 +124,6 @@ describe('alchemy-app routes', () => {
       .send({ email: 'brettford@defense.gov', password: 'password' });
 
     const res = await agent.delete('/api/v1/users/session');
-    expect(res.body).toEqual({ message: 'Sign out successful' });
+    expect(res.body).toEqual({ success: true, message: 'Sign out successful' });
   });
 });
