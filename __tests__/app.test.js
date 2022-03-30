@@ -118,7 +118,7 @@ describe('alchemy-app routes', () => {
     expect(res.body).toEqual({ success: true, message: 'Sign out successful' });
   });
 
-  it.only('signed in users can posts notes', async () => {
+  it('signed in users can posts notes', async () => {
     const agent = request.agent(app);
 
     const expected = {
