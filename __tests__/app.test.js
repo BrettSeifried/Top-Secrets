@@ -3,7 +3,6 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
-const { agent } = require('supertest');
 
 describe('alchemy-app routes', () => {
   beforeEach(() => {
@@ -135,7 +134,6 @@ describe('alchemy-app routes', () => {
     await agent
       .post('/api/v1/users/session')
       .send({ email: 'brettford@defense.gov', password: 'password' });
-    // await agent.get('/api/v1/notes');
     const res = await agent.post('/api/v1/notes').send(expected);
 
     expect(res.body).toEqual({ id: expect.any(String), ...expected });
