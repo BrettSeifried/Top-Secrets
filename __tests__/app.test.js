@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
+const { agent } = require('supertest');
 
 describe('alchemy-app routes', () => {
   beforeEach(() => {
@@ -109,4 +110,18 @@ describe('alchemy-app routes', () => {
   //     description: 'test description',
   //   });
   // });
+
+  it('delete logges out user', async () => {
+    const user = await UserService.create({
+      email: 'brettford@defense.gov',
+      password: 'password',
+    });
+
+    await agent
+      .post('api/v1/auth/signin')
+      .send({ email: 'brettford@defense.gov', password: 'password' });
+
+    const res = await agent.delete('/api/v1/users');
+    expect(res.body).toEqual({ message: 'Sign out successful' });
+  });
 });
