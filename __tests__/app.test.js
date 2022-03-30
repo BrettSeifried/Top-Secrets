@@ -103,7 +103,7 @@ describe('alchemy-app routes', () => {
     expect(res.status).toEqual(200);
   });
 
-  it('delete loggs out user', async () => {
+  it('delete logs out user', async () => {
     const agent = request.agent(app);
 
     await UserService.create({
@@ -119,10 +119,12 @@ describe('alchemy-app routes', () => {
     expect(res.body).toEqual({ success: true, message: 'Sign out successful' });
   });
 
-  it('signed in users can posts messages', async () => {
+  it('signed in users can posts notes', async () => {
+    const agent = request.agent(app);
+
     const expected = {
       title: 'Test',
-      description: 'Test Content',
+      content: 'Test Content',
       created_at: expect.any(String),
     };
     await UserService.create({
@@ -136,6 +138,6 @@ describe('alchemy-app routes', () => {
     await agent.get('/api/v1/notes');
     const res = await agent.post('/api/v1/notes').send(expected);
 
-    expect(res.body).toEqual({ id: expect.any(String), expected });
+    expect(res.body).toEqual({ id: expect.any(String), ...expected });
   });
 });
