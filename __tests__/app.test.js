@@ -112,16 +112,18 @@ describe('alchemy-app routes', () => {
   // });
 
   it('delete logges out user', async () => {
-    const user = await UserService.create({
+    const agent = request.agent(app);
+
+    await UserService.create({
       email: 'brettford@defense.gov',
       password: 'password',
     });
 
     await agent
-      .post('api/v1/auth/signin')
+      .post('/api/v1/users/session')
       .send({ email: 'brettford@defense.gov', password: 'password' });
 
-    const res = await agent.delete('/api/v1/users');
+    const res = await agent.delete('/api/v1/users/session');
     expect(res.body).toEqual({ message: 'Sign out successful' });
   });
 });
