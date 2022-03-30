@@ -83,30 +83,30 @@ describe('alchemy-app routes', () => {
     });
   });
 
-  it('only logged in users can send messages', async () => {
-    const agent = request.agent(app);
+  // it('only logged in users can send messages', async () => {
+  //   const agent = request.agent(app);
 
-    await UserService.create({
-      email: 'brettford@defense.gov',
-      password: 'password',
-    });
+  //   await UserService.create({
+  //     email: 'brettford@defense.gov',
+  //     password: 'password',
+  //   });
 
-    let res = await agent.get('/api/v1/users/private');
-    expect(res.status).toEqual(401);
+  //   let res = await agent.get('/api/v1/users/private');
+  //   expect(res.status).toEqual(401);
 
-    await request(app)
-      .post('/api/v1/users/session')
-      .send({ email: 'brettford@defense.gov', password: 'password' });
+  //   await request(app)
+  //     .post('/api/v1/users/session')
+  //     .send({ email: 'brettford@defense.gov', password: 'password' });
 
-    await agent
-      .post('/api/v1/notes')
-      .send({ title: 'test title', description: 'test description' });
+  //   await agent
+  //     .post('/api/v1/notes')
+  //     .send({ title: 'test title', description: 'test description' });
 
-    res = await agent.get('/api/v1/notes');
+  //   res = await agent.get('/api/v1/notes');
 
-    expect(res.body).toEqual({
-      title: 'test title',
-      description: 'test description',
-    });
-  });
+  //   expect(res.body).toEqual({
+  //     title: 'test title',
+  //     description: 'test description',
+  //   });
+  // });
 });
