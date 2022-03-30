@@ -119,13 +119,13 @@ describe('alchemy-app routes', () => {
     expect(res.body).toEqual({ success: true, message: 'Sign out successful' });
   });
 
-  it('signed in users can posts notes', async () => {
+  it.only('signed in users can posts notes', async () => {
     const agent = request.agent(app);
 
     const expected = {
       title: 'Test',
       content: 'Test Content',
-      created_at: expect.any(String),
+      createdAt: expect.any(String),
     };
     await UserService.create({
       email: 'brettford@defense.gov',
@@ -135,7 +135,7 @@ describe('alchemy-app routes', () => {
     await agent
       .post('/api/v1/users/session')
       .send({ email: 'brettford@defense.gov', password: 'password' });
-    await agent.get('/api/v1/notes');
+    // await agent.get('/api/v1/notes');
     const res = await agent.post('/api/v1/notes').send(expected);
 
     expect(res.body).toEqual({ id: expect.any(String), ...expected });
